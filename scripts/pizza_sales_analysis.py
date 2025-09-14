@@ -1,48 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[57]:
-
 
 import pandas as pd
 
 # Load CSVs (use encoding fix if needed)
-pizzas = pd.read_csv("../data/pizzas.csv")
-order_details = pd.read_csv("../data/order_details.csv")
-orders = pd.read_csv("../data/orders.csv")
-pizza_types = pd.read_csv("../data/pizza_types.csv", encoding="cp1252")
-
-
-
-
-# In[58]:
-
+pizzas = pd.read_csv("../data/raw/pizzas.csv")
+order_details = pd.read_csv("../raw/data/order_details.csv")
+orders = pd.read_csv("../data/raw/orders.csv")
+pizza_types = pd.read_csv("../data/raw/pizza_types.csv", encoding="cp1252")
 
 order_details.head()
-
-
-# In[59]:
-
-
 pizza_types.head()
-
-
-# In[60]:
-
-
 pizzas.head()
-
-
-# In[61]:
-
-
 pizza_types.head()
-
-
-# In[62]:
-
-
-#Merging all table
 
 
 # Merge: order_details + pizzas
@@ -56,8 +24,6 @@ df = df.merge(pizza_types, on="pizza_type_id", how="left")
 
 df
 
-
-
 # 📊 Sales & Revenue
 # 
 # What was the total revenue generated in 2015?
@@ -68,7 +34,7 @@ df
 # 
 # What is the average order value (AOV) across all orders?
 
-# In[63]:
+
 
 
 # Compute revenue
@@ -84,26 +50,11 @@ revenue_by_category=(
 revenue_by_category
    
 
-
-# In[64]:
-
-
 #What was the total revenue generated in 2015?
 df['date']=pd.to_datetime(df['date'])
 total_revenue_2015=df[df['date'].dt.year == 2015]['revenue'].sum()
 total_revenue_2015
 df['name']
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[45]:
-
 
 #Which pizza category (Classic, Chicken, Veggie, Supreme) earned the most revenue?
 #.idxmax() → returns the index label (here, the category) of the maximum value.
@@ -112,9 +63,6 @@ top_category=revenue_by_category.idxmax()
 Revenue=revenue_by_category.max()
 print("Top category:",top_category)
 print("Revenue:",Revenue)
-
-
-# In[46]:
 
 
 #What is the average order value (AOV) across all orders?
@@ -145,21 +93,12 @@ print("Most ordered pizaa:",top_pizza_sales)
 pizza_sales
 
 
-# In[48]:
-
 
 #Which size (S, M, L, XL, XXL) sold the most units?
 pizza_size=df.groupby('size')['quantity'].sum()
 
 top_sale_pizza_size=pizza_size.idxmax()
 print("Most sale pizza size:",top_sale_pizza_size)
-
-
-
-
-
-
-# In[49]:
 
 
 #Which size contributed the most revenue?
@@ -169,17 +108,10 @@ print(revenue_contribution_based_on_size)
 print("Most contribution on pizza sales by pizza size:",cont)
 
 
-
-# In[50]:
-
-
 #What are the top 5 pizzas by total quantity sold?
 pizza_sales=df.groupby('name')['quantity'].sum()
 top_5=pizza_sales.sort_values(ascending=False).head()
 top_5
-
-
-# In[51]:
 
 
 df["date"] = pd.to_datetime(df["date"])
@@ -194,12 +126,6 @@ print("monthly_revenue:",monthly_revenue)
 print('Month in which most revenue has:',month)
 
 
-    
-
-
-# In[52]:
-
-
 df['weekday']=df['date'].dt.day_name()
 revenue_by_weekday = df.groupby("weekday")["revenue"].sum().sort_values(ascending=False)
 
@@ -210,11 +136,6 @@ best_revenue = revenue_by_weekday.max()
 print("Revenue by weekday:\n", revenue_by_weekday)
 print("Best day:", best_day, "with revenue:", best_revenue)
 
-
-# In[55]:
-
-
-#What are the peak order hours of the 
 df["time"] = pd.to_datetime(df["time"], format="%H:%M:%S")
 
 df["hour"] = df["time"].dt.hour
@@ -227,10 +148,6 @@ print("Unique orders per hour:\n", orders_by_hour)
 print("Total pizzas sold per hour:\n", pizzas_by_hour)
 print("Revenue by hour:\n", revenue_per_hour)
 print("Busiest hour:", busiest_hour, "with revenue:", busiest_revenue)
-
-
-
-# In[56]:
 
 
 def get_time_of_day(hour):
@@ -251,23 +168,5 @@ revenue_by_tod = df.groupby("time_of_day")["revenue"].sum().sort_values(ascendin
 print(revenue_by_tod)
 
        
-    
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+ 
 
